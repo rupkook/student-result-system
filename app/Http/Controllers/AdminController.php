@@ -15,14 +15,24 @@ class AdminController extends Controller
     {
         $stats = [
             'total_students' => Student::count(),
-            'active_students' => Student::where('status', 'active')->count(),
+            'total_courses' => Course::count(),
             'total_results' => Result::count(),
             'published_results' => Result::where('status', 'published')->count(),
+            'avg_performance' => Result::where('status', 'published')->avg('marks'),
             'recent_students' => Student::latest()->take(5)->get(),
-            'recent_activities' => Result::latest()->take(5)->get(),
+            'recent_results' => Result::with('student', 'course')->latest()->take(5)->get(),
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        // Course distribution for chart
+        $courseStats = Course::withCount('results')->get();
+        
+        // Grade distribution for chart
+        $gradeStats = Result::where('status', 'published')
+            ->selectRaw('grade, COUNT(*) as count')
+            ->groupBy('grade')
+            ->get();
+
+        return view('admin.dashboard', compact('stats', 'courseStats', 'gradeStats'));
     }
 
     public function students()
@@ -33,10 +43,42 @@ class AdminController extends Controller
         return view('admin.students', compact('students', 'courses'));
     }
 
-    public function results()
+    public function results(Request $request)
     {
-        $results = Result::with('student', 'course')->paginate(10);
-        return view('admin.results', compact('results'));
+        $query = Result::with('student', 'course');
+        
+        // Search functionality
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('student', function($studentQuery) use ($search) {
+                    $studentQuery->where('first_name', 'like', '%' . $search . '%')
+                                ->orWhere('last_name', 'like', '%' . $search . '%')
+                                ->orWhere('student_id', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('course', function($courseQuery) use ($search) {
+                    $courseQuery->where('course_name', 'like', '%' . $search . '%');
+                })
+                ->orWhere('grade', 'like', '%' . $search . '%');
+            });
+        }
+        
+        // Course filter
+        if ($request->has('course') && $request->course) {
+            $query->whereHas('course', function($courseQuery) use ($request) {
+                $courseQuery->where('course_name', $request->course);
+            });
+        }
+        
+        // Exam filter
+        if ($request->has('exam') && $request->exam) {
+            $query->where('exam_type', $request->exam);
+        }
+        
+        $results = $query->paginate(10);
+        $courses = Course::all();
+        
+        return view('admin.results', compact('results', 'courses'));
     }
 
     public function showAddStudentForm()

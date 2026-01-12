@@ -75,23 +75,9 @@
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                     <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
                         <div class="relative">
-                            <input type="text" id="searchInput" placeholder="Search results..." class="form-input pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full md:w-64">
+                            <input type="text" id="searchInput" placeholder="Search by student name..." class="form-input pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full md:w-64" onkeyup="searchResults()">
                             <i class="fas fa-search-location w-5 h-5 text-gray-400 absolute left-3 top-2.5"></i>
                         </div>
-                        <select id="courseFilter" class="form-input px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">All Courses</option>
-                            <option>MERN Stack</option>
-                            <option>Web App Dev</option>
-                            <option>UI/UX</option>
-                            <option>Python</option>
-                            <option>Graphic Design</option>
-                            <option>Motion Design</option>
-                            <option>Video Editing</option>
-                            <option>Digital Marketing</option>
-                            <option>Cybersecurity</option>
-                            <option>Data Science</option>
-                            <option>Networking</option>
-                        </select>
                     </div>
                 </div>
             </div>
@@ -301,18 +287,33 @@ function fetchStudentInfo(studentId) {
         });
 }
 
-// Search results
+// Search results with debounce
+let searchTimeout;
 function searchResults() {
-    const searchValue = document.getElementById('searchInput').value;
-    const courseFilter = document.getElementById('courseFilter').value;
-    const examFilter = document.getElementById('examFilter').value;
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        filterResults();
+    }, 300); // Wait 300ms after user stops typing
+}
+
+function filterResults() {
+    const searchValue = document.getElementById('searchInput').value.toLowerCase();
+    const tableRows = document.querySelectorAll('#resultsTableBody tr');
     
-    const url = new URL('/admin/results', window.location.origin);
-    if (searchValue) url.searchParams.set('search', searchValue);
-    if (courseFilter) url.searchParams.set('course', courseFilter);
-    if (examFilter) url.searchParams.set('exam', examFilter);
-    
-    window.location.href = url.toString();
+    tableRows.forEach(row => {
+        const studentName = row.cells[2]?.textContent.toLowerCase() || '';
+        const studentId = row.cells[1]?.textContent.toLowerCase() || '';
+        const course = row.cells[3]?.textContent.toLowerCase() || '';
+        const grade = row.cells[6]?.textContent.toLowerCase() || '';
+        
+        const matchesSearch = searchValue === '' || 
+            studentName.includes(searchValue) || 
+            studentId.includes(searchValue) || 
+            course.includes(searchValue) || 
+            grade.includes(searchValue);
+        
+        row.style.display = matchesSearch ? '' : 'none';
+    });
 }
 
 // Delete result (placeholder)
