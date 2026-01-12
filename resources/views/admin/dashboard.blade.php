@@ -61,7 +61,7 @@
                 <h1 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h1>
                 <div class="flex items-center space-x-4">
                     <button class="btn-transition bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">
-                        Add New Student
+                        ADMIN
                     </button>
                     <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
                         <span class="text-white text-sm font-medium">AD</span>
