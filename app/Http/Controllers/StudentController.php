@@ -20,7 +20,7 @@ class StudentController extends Controller
             
             $student = Student::with('results')->find($student->id); // Eager load results
             
-            return view('student.dashboard-new', compact('student'));
+            return view('student.dashboard-minimal', compact('student'));
         } catch (\Exception $e) {
             // Log the error and return a simple view
             return view('student.dashboard', ['student' => Auth::user()]);

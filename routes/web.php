@@ -10,14 +10,14 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('home');
 
-// Login page route
+// Authentication routes
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-// Authentication routes
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout.post');
 
 // Student Portal Routes (protected)
 Route::middleware('auth')->prefix('student')->name('student.')->group(function () {
