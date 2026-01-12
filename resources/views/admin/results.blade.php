@@ -5,43 +5,35 @@
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <link rel="stylesheet" href="{{ asset('css/results.css') }}">
-<style>
-.form-input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
-}
-.btn-transition {
-    @apply transition-all duration-200 ease-in-out;
-}
-</style>
 @endsection
 
 @section('content')
 <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
-    <div class="w-64 bg-white shadow-lg">
+    <div class="w-64 bg-white shadow-lg border-r border-gray-200">
         <div class="p-6">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-                    <i class="fas fa-shield-alt text-white"></i>
+                <div class="w-10 h-10 bg-red-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-user-shield text-white"></i>
                 </div>
                 <h2 class="text-xl font-bold text-gray-800">Admin Panel</h2>
             </div>
         </div>
         
         <nav class="mt-6">
-            <a href="{{ route('admin.dashboard') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700 hover:text-red-600">
+            <a href="{{ route('admin.dashboard') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200">
                 <i class="fas fa-home w-5 h-5 mr-3"></i>
                 Dashboard
             </a>
-            <a href="{{ route('admin.admin.students') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700 hover:text-red-600">
+            <a href="{{ route('admin.students') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200">
                 <i class="fas fa-user-graduate w-5 h-5 mr-3"></i>
                 Manage Students
             </a>
-            <a href="{{ route('admin.results') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700 hover:text-red-600 border-l-4 border-red-600">
+            <a href="{{ route('admin.results') }}" class="sidebar-item flex items-center px-6 py-3 text-red-600 bg-red-50 border-l-4 border-red-600 transition-all duration-200">
                 <i class="fas fa-chart-line w-5 h-5 mr-3"></i>
                 Manage Results
             </a>
-            <a href="{{ route('logout') }}" class="sidebar-item flex items-center px-6 py-3 text-red-600 hover:text-red-700 mt-8">
+            <a href="{{ route('logout') }}" class="sidebar-item flex items-center px-6 py-3 text-red-600 hover:text-red-700 mt-8 transition-all duration-200">
                 <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
                 Logout
             </a>
@@ -56,11 +48,11 @@
                 <h1 class="text-2xl font-semibold text-gray-800">Manage Results</h1>
                 <div class="flex items-center space-x-4">
                     <button onclick="openPublishResultModal()" class="btn-transition bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 flex items-center">
-                        <i class="fas fa-plus w-4 h-4 mr-2"></i>
+                        <i class="fas fa-plus-circle w-4 h-4 mr-2"></i>
                         Publish New Result
                     </button>
                     <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                        <span class="text-white text-sm font-medium">AD</span>
+                        <i class="fas fa-user-shield text-white text-sm"></i>
                     </div>
                 </div>
             </div>
@@ -68,13 +60,23 @@
 
         <!-- Results Content -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+            <!-- Success Message -->
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>{{ session('success') }}</span>
+                    </div>
+                </div>
+            @endif
+            
             <!-- Search and Filter -->
             <div class="bg-white rounded-lg shadow p-4 mb-6">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
                     <div class="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
                         <div class="relative">
                             <input type="text" id="searchInput" placeholder="Search results..." class="form-input pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full md:w-64">
-                            <i class="fas fa-search w-5 h-5 text-gray-400 absolute left-3 top-2.5"></i>
+                            <i class="fas fa-search-location w-5 h-5 text-gray-400 absolute left-3 top-2.5"></i>
                         </div>
                         <select id="courseFilter" class="form-input px-3 py-2 border border-gray-300 rounded-md">
                             <option value="">All Courses</option>
@@ -122,7 +124,7 @@
                                         <input type="checkbox" class="rounded border-gray-300">
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $result->student->student_id ?? 'N/A' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->student->full_name ?? 'N/A' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->student->first_name . ' ' . $result->student->last_name ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->subject ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $result->exam_type ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{{ $result->score ?? 'N/A' }}/100</td>
@@ -143,9 +145,9 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="9" class="px-6 py-8 text-center">
+                                    <td colspan="10" class="px-6 py-8 text-center">
                                         <div class="text-center">
-                                            <i class="fas fa-chart-bar text-4xl text-gray-300 mb-4"></i>
+                                            <i class="fas fa-inbox text-4xl text-gray-300 mb-4"></i>
                                             <h4 class="text-lg font-semibold text-gray-600 mb-2">No Results Available</h4>
                                             <p class="text-gray-500 mb-1">No results have been published yet.</p>
                                             <p class="text-sm text-gray-400">Click "Publish New Result" to add your first result.</p>
@@ -281,7 +283,10 @@ function fetchStudentInfo(studentId) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.getElementById('student_name').value = data.student.full_name;
+                // Combine first_name and last_name for full name
+                const fullName = data.student.first_name + ' ' + data.student.last_name;
+                document.getElementById('student_name').value = fullName;
+                document.getElementById('student_name').classList.remove('text-red-500');
             } else {
                 document.getElementById('student_name').value = 'Student not found';
                 document.getElementById('student_name').classList.add('text-red-500');

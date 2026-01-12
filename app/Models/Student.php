@@ -19,7 +19,12 @@ class Student extends Authenticatable
         'date_of_birth',
         'gender',
         'address',
-        'department',
+        'city',
+        'division',
+        'zip_code',
+        'country',
+        'course',
+        'admission_date',
         'status',
         'password'
     ];

@@ -26,9 +26,9 @@ class AdminController extends Controller
     public function students()
     {
         $students = Student::paginate(10);
-        $departments = ['mernstack', 'Web app development (full-stack)', 'UIUX', 'Python Programing', 'Graphic Design', 'Motion Design', 'Vedio Editing', 'Digital Marketing', 'Cybersecurity', 'Data Science', 'Networking'];
+        $courses = ['MERN Stack', 'Web App Dev', 'UI/UX', 'Python', 'Graphic Design', 'Motion Design', 'Video Editing', 'Digital Marketing', 'Cybersecurity', 'Data Science', 'Networking'];
         
-        return view('admin.students', compact('students', 'departments'));
+        return view('admin.students', compact('students', 'courses'));
     }
 
     public function results()
@@ -39,8 +39,8 @@ class AdminController extends Controller
 
     public function showAddStudentForm()
     {
-        $departments = ['mernstack', 'Web app development (full-stack)', 'UIUX', 'Python Programing', 'Graphic Design', 'Motion Design', 'Vedio Editing', 'Digital Marketing', 'Cybersecurity', 'Data Science', 'Networking'];
-        return view('admin.add-student', compact('departments'));
+        $courses = ['MERN Stack', 'Web App Dev', 'UI/UX', 'Python', 'Graphic Design', 'Motion Design', 'Video Editing', 'Digital Marketing', 'Cybersecurity', 'Data Science', 'Networking'];
+        return view('admin.add-student', compact('courses'));
     }
 
     public function storeStudent(Request $request)
@@ -52,11 +52,11 @@ class AdminController extends Controller
             'phone' => 'nullable|string|max:20',
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:male,female,other',
-            'department' => 'required|in:mernstack,Web app development (full-stack),UIUX,Python Programing,Graphic Design,Motion Design,Vedio Editing,Digital Marketing,Cybersecurity,Data Science,Networking',
+            'course' => 'required|in:MERN Stack,Web App Dev,UI/UX,Python,Graphic Design,Motion Design,Video Editing,Digital Marketing,Cybersecurity,Data Science,Networking',
             'admission_date' => 'required|date',
             'address' => 'required|string|max:255',
             'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
+            'division' => 'required|string|max:255',
             'zip_code' => 'required|string|max:20',
             'country' => 'required|string|max:255',
             'password' => 'required|string|min:6',
@@ -77,12 +77,17 @@ class AdminController extends Controller
             'date_of_birth' => $validated['date_of_birth'],
             'gender' => $validated['gender'],
             'address' => $validated['address'],
-            'department' => $validated['department'],
+            'city' => $validated['city'],
+            'division' => $validated['division'],
+            'zip_code' => $validated['zip_code'],
+            'country' => $validated['country'],
+            'course' => $validated['course'],
+            'admission_date' => $validated['admission_date'],
             'password' => Hash::make($validated['password']),
             'status' => 'active',
         ]);
 
-        return redirect()->route('admin.admin.students')
+        return redirect()->route('admin.students')
             ->with('success', "Student created successfully! Student ID: {$studentId}");
     }
 
@@ -110,7 +115,7 @@ class AdminController extends Controller
             'date_of_birth' => 'required|date',
             'gender' => 'required|in:male,female,other',
             'address' => 'required|string|max:255',
-            'department' => 'required|in:mernstack,Web app development (full-stack),UIUX,Python Programing,Graphic Design,Motion Design,Vedio Editing,Digital Marketing,Cybersecurity,Data Science,Networking',
+            'course' => 'required|in:MERN Stack,Web App Dev,UI/UX,Python,Graphic Design,Motion Design,Video Editing,Digital Marketing,Cybersecurity,Data Science,Networking',
             'status' => 'required|in:active,inactive,suspended',
         ]);
 
@@ -152,25 +157,24 @@ class AdminController extends Controller
     public function publishResult(Request $request)
     {
         $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
+            'student_id' => 'required|exists:students,student_id',
             'student_name' => 'required|string|max:255',
             'course' => 'required|string|max:255',
             'grade' => 'required|string|max:10',
             'score' => 'required|numeric|min:0|max:100',
-            'exam_type' => 'required|string|max:100',
         ]);
 
-        // Find student
-        $student = Student::find($validated['student_id']);
+        // Find student by student_id (not database id)
+        $student = Student::where('student_id', $validated['student_id'])->first();
         if (!$student) {
             return back()->withErrors(['student_id' => 'Student not found']);
         }
 
         // Create result
         Result::create([
-            'student_id' => $validated['student_id'],
+            'student_id' => $student->id, // Use database id
             'subject' => $validated['course'], // Store course as subject in database
-            'exam_type' => $validated['exam_type'],
+            'exam_type' => 'General', // Default exam type since it's not in form
             'score' => $validated['score'],
             'grade' => $validated['grade'],
             'status' => 'published',

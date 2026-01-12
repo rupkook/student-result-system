@@ -32,11 +32,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/results', [AdminController::class, 'results'])->name('results');
     Route::post('/results/publish', [AdminController::class, 'publishResult'])->name('results.publish');
     // Admin student management routes
-    Route::get('/students/add', [AdminController::class, 'showAddStudentForm'])->name('admin.students.add');
-    Route::get('/students', [AdminController::class, 'students'])->name('admin.students');
-    Route::get('/students/search/{student_id}', [AdminController::class, 'searchStudent'])->name('admin.students.search');
-    Route::post('/students/store', [AdminController::class, 'storeStudent'])->name('admin.students.store');
-    Route::get('/students/{id}/edit', [AdminController::class, 'editStudent'])->name('admin.students.edit');
-    Route::post('/students/{id}/update', [AdminController::class, 'updateStudent'])->name('admin.students.update');
-    Route::post('/students/{id}/delete', [AdminController::class, 'deleteStudent'])->name('admin.students.delete');
+    Route::get('/students/add', [AdminController::class, 'showAddStudentForm'])->name('students.add');
+    Route::get('/students', [AdminController::class, 'students'])->name('students');
+    Route::get('/students/search/{student_id}', [AdminController::class, 'searchStudent'])->name('students.search');
+    Route::post('/students/store', [AdminController::class, 'storeStudent'])->name('students.store');
+    Route::get('/students/{id}/edit', [AdminController::class, 'editStudent'])->name('students.edit');
+    Route::post('/students/{id}/update', [AdminController::class, 'updateStudent'])->name('students.update');
+    Route::post('/students/{id}/delete', [AdminController::class, 'deleteStudent'])->name('students.delete');
 });

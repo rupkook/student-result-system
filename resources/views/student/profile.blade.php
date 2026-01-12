@@ -55,62 +55,144 @@
 
         <!-- Profile Content -->
         <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Profile Information -->
-                            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                                <h3 class="font-semibold text-blue-800 mb-4 text-lg">Your Profile</h3>
-                                <div class="space-y-2">
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Full Name:</span> {{ auth()->user()->full_name }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Email:</span> {{ auth()->user()->email }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Department:</span> {{ auth()->user()->department }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Phone:</span> {{ auth()->user()->phone ?? 'Not provided' }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Date of Birth:</span> {{ auth()->user()->date_of_birth ? auth()->user()->date_of_birth->format('M d, Y') : 'Not provided' }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Gender:</span> {{ ucfirst(auth()->user()->gender ?? 'Not specified') }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Address:</span> {{ auth()->user()->address ?? 'Not provided' }}</p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Status:</span> 
-                                        <span class="px-2 py-1 text-xs rounded-full {{ auth()->user()->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                            {{ ucfirst(auth()->user()->status) }}
-                                        </span>
-                                    </p>
-                                    <p class="text-sm text-gray-700"><span class="font-medium">Student ID:</span> {{ auth()->user()->student_id }}</p>
-                                </div>
-                            </div>
-
-                            <!-- Results Section -->
-                            <div class="bg-green-50 p-6 rounded-lg border border-green-200">
-                                <h3 class="font-semibold text-green-800 mb-4 text-lg">Your Results</h3>
-                                @if(auth()->user()->results->count() > 0)
-                                    <div class="space-y-3 max-h-64 overflow-y-auto">
-                                        @foreach(auth()->user()->results as $result)
-                                            <div class="bg-white p-4 rounded-lg border border-green-200 shadow-sm">
-                                                <div class="flex justify-between items-start">
-                                                    <div>
-                                                        <p class="font-medium text-gray-800">{{ $result->exam_type ?? 'Exam' }}</p>
-                                                        <p class="text-sm text-gray-600">Score: <span class="font-semibold">{{ $result->score ?? 'N/A' }}</span></p>
-                                                        <p class="text-sm text-gray-600">Grade: <span class="font-semibold">{{ $result->grade ?? 'N/A' }}</span></p>
-                                                        <p class="text-sm text-gray-600">Subject: <span class="font-semibold">{{ $result->subject ?? 'N/A' }}</span></p>
-                                                    </div>
-                                                    <div class="text-right">
-                                                        <p class="text-xs text-gray-500">{{ $result->created_at->format('M d, Y') }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                @else
-                                    <div class="text-center py-8">
-                                        <i class="fas fa-chart-bar w-16 h-16 mx-auto text-gray-400 mb-4"></i>
-                                        <h4 class="text-xl font-semibold text-gray-600 mb-2">No Results Available</h4>
-                                        <p class="text-gray-500 mb-1">Your results section is currently empty.</p>
-                                        <p class="text-sm text-gray-400">Results will appear here when your admin adds them.</p>
-                                    </div>
-                                @endif
-                            </div>
+            <div class="max-w-6xl mx-auto">
+                <!-- Personal Information Section -->
+                <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+                    <div class="flex items-center mb-6 pb-3 border-b-2 border-gray-200">
+                        <div class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-user text-blue-600 mr-3"></i>
+                            Personal Information
                         </div>
                     </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Full Name</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Email Address</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->email }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Phone Number</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->phone ?? 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Date of Birth</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->date_of_birth ? auth()->user()->date_of_birth->format('M d, Y') : 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Gender</p>
+                            <p class="font-semibold text-gray-800">{{ ucfirst(auth()->user()->gender ?? 'Not specified') }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Student ID</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->student_id ?? 'Not assigned' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information Section -->
+                <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+                    <div class="flex items-center mb-6 pb-3 border-b-2 border-gray-200">
+                        <div class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-map-marker-alt text-green-600 mr-3"></i>
+                            Address Information
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Street Address</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->address ?? 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">City</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->city ?? 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Division/State</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->division ?? 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Zip Code</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->zip_code ?? 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Country</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->country ?? 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Information Section -->
+                <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+                    <div class="flex items-center mb-6 pb-3 border-b-2 border-gray-200">
+                        <div class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-graduation-cap text-purple-600 mr-3"></i>
+                            Academic Information
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Course</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->course ?? 'Not assigned' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Admission Date</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->admission_date ? auth()->user()->admission_date->format('M d, Y') : 'Not provided' }}</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500 mb-1">Status</p>
+                            <span class="px-3 py-1 text-sm rounded-full font-medium {{ auth()->user()->status == 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ ucfirst(auth()->user()->status) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="bg-gradient-to-r from-gray-50 to-white rounded-xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center mb-6 pb-3 border-b-2 border-gray-200">
+                        <div class="text-xl font-bold text-gray-800 flex items-center">
+                            <i class="fas fa-chart-line text-orange-600 mr-3"></i>
+                            Academic Results
+                        </div>
+                    </div>
+                    @if(auth()->user()->results && auth()->user()->results->count() > 0)
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            @foreach(auth()->user()->results as $result)
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <h4 class="font-semibold text-gray-800">{{ $result->exam_type ?? 'Exam' }}</h4>
+                                        <span class="text-xs text-gray-500">{{ $result->created_at->format('M d, Y') }}</span>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between">
+                                            <span class="text-sm text-gray-600">Subject:</span>
+                                            <span class="text-sm font-medium">{{ $result->subject ?? 'N/A' }}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-sm text-gray-600">Score:</span>
+                                            <span class="text-sm font-semibold text-blue-600">{{ $result->score ?? 'N/A' }}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-sm text-gray-600">Grade:</span>
+                                            <span class="text-sm font-semibold {{ $result->grade == 'A' ? 'text-green-600' : ($result->grade == 'B' ? 'text-blue-600' : ($result->grade == 'C' ? 'text-yellow-600' : 'text-red-600')) }}">
+                                                {{ $result->grade ?? 'N/A' }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="text-center py-12">
+                            <i class="fas fa-chart-bar w-20 h-20 mx-auto text-gray-400 mb-6"></i>
+                            <h4 class="text-2xl font-semibold text-gray-600 mb-3">No Results Available</h4>
+                            <p class="text-gray-500 mb-2">Your results section is currently empty.</p>
+                            <p class="text-sm text-gray-400">Results will appear here when your admin adds them.</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </main>
