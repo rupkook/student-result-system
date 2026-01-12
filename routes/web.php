@@ -30,6 +30,9 @@ Route::middleware('auth')->prefix('student')->name('student.')->group(function (
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/results', [AdminController::class, 'results'])->name('results');
+    Route::get('/results/publish', function() {
+        return redirect()->route('admin.results');
+    });
     Route::post('/results/publish', [AdminController::class, 'publishResult'])->name('results.publish');
     Route::delete('/results/{id}', [AdminController::class, 'deleteResult'])->name('results.delete');
     // Admin student management routes

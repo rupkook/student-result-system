@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Models\Result;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,7 @@ class AdminController extends Controller
 
     public function results()
     {
-        $results = Result::with('student')->paginate(10);
+        $results = Result::with('student', 'course')->paginate(10);
         return view('admin.results', compact('results'));
     }
 
@@ -168,9 +169,12 @@ class AdminController extends Controller
 
     public function searchStudent($student_id)
     {
+        \Log::info('Searching for student ID: ' . $student_id);
+        
         $student = Student::where('student_id', $student_id)->first();
         
         if (!$student) {
+            \Log::error('Student not found with ID: ' . $student_id);
             return response()->json([
                 'success' => false,
                 'message' => 'Student not found'
@@ -188,7 +192,6 @@ class AdminController extends Controller
         $validated = $request->validate([
             'student_id' => 'required|exists:students,student_id',
             'student_name' => 'required|string|max:255',
-            'course' => 'required|string|max:255',
             'grade' => 'required|string|max:10',
             'score' => 'required|numeric|min:0|max:100',
         ]);
@@ -199,20 +202,67 @@ class AdminController extends Controller
             return back()->withErrors(['student_id' => 'Student not found']);
         }
 
+        // Find course by student's course field - AUTOMATIC!
+        $course = Course::where('course_name', 'like', '%' . $student->course . '%')->first();
+        
+        // If no exact match, try course code mapping
+        if (!$course) {
+            $courseMapping = [
+                'MERN Stack' => 'MERN001',
+                'Web App Dev' => 'WEB001', 
+                'UI/UX' => 'UIUX001',
+                'Python' => 'PYT001',
+                'Graphic Design' => 'GRD001',
+                'Motion Design' => 'MOT001',
+                'Video Editing' => 'VID001',
+                'Digital Marketing' => 'DMK001',
+                'Cybersecurity' => 'SEC001',
+                'Data Science' => 'SCI001',
+                'Networking' => 'NET001'
+            ];
+            
+            $courseCode = $courseMapping[$student->course] ?? null;
+            if ($courseCode) {
+                $course = Course::where('course_code', $courseCode)->first();
+            }
+        }
+
         // Create result
         Result::create([
-            'student_id' => $student->id, // Use database id
-            'subject' => $validated['course'], // Store course as subject in database
-            'exam_type' => 'General', // Default exam type since it's not in form
-            'score' => $validated['score'],
+            'student_id' => $student->id,
+            'course_id' => $course ? $course->id : null,
+            'exam_type' => 'General',
+            'marks' => $validated['score'],
+            'total_marks' => 100,
             'grade' => $validated['grade'],
+            'gpa' => $this->calculateGPA($validated['grade']),
             'status' => 'published',
-            'created_at' => now(),
-            'updated_at' => now(),
+            'exam_date' => now(),
+            'remarks' => 'Published result',
         ]);
 
         return redirect()->route('admin.results')
             ->with('success', 'Result published successfully!');
+    }
+
+    private function calculateGPA($grade)
+    {
+        $gpaMap = [
+            'A+' => 4.0,
+            'A' => 3.75,
+            'A-' => 3.5,
+            'B+' => 3.25,
+            'B' => 3.0,
+            'B-' => 2.75,
+            'C+' => 2.5,
+            'C' => 2.25,
+            'C-' => 2.0,
+            'D+' => 1.75,
+            'D' => 1.5,
+            'F' => 0.0,
+        ];
+        
+        return $gpaMap[$grade] ?? 0.0;
     }
 
     public function deleteResult($id)

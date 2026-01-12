@@ -69,9 +69,9 @@
                                                 <div class="flex justify-between items-start">
                                                     <div>
                                                         <p class="font-medium text-gray-800">{{ $result->exam_type ?? 'Exam' }}</p>
-                                                        <p class="text-sm text-gray-600">Score: <span class="font-semibold">{{ $result->score ?? 'N/A' }}</span></p>
+                                                        <p class="text-sm text-gray-600">Score: <span class="font-semibold">{{ $result->marks ?? 'N/A' }}/{{ $result->total_marks ?? 'N/A' }}</span></p>
                                                         <p class="text-sm text-gray-600">Grade: <span class="font-semibold">{{ $result->grade ?? 'N/A' }}</span></p>
-                                                        <p class="text-sm text-gray-600">Subject: <span class="font-semibold">{{ $result->subject ?? 'N/A' }}</span></p>
+                                                        <p class="text-sm text-gray-600">Course: <span class="font-semibold">{{ $result->course ? $result->course->course_name : 'N/A' }}</span></p>
                                                     </div>
                                                     <div class="text-right">
                                                         <p class="text-xs text-gray-500">{{ $result->created_at->format('M d, Y') }}</p>

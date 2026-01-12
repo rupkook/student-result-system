@@ -107,10 +107,11 @@
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subject</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exam Type</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Marks</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">GPA</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Published Date</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -125,14 +126,15 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $result->student->student_id ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->student->first_name . ' ' . $result->student->last_name ?? 'N/A' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->subject ?? 'N/A' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $result->exam_type ?? 'N/A' }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{{ $result->score ?? 'N/A' }}/100</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->course ? $result->course->course_name : 'N/A' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->exam_type ?? 'N/A' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $result->marks ?? 'N/A' }}/100</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{{ $result->grade ?? 'N/A' }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $result->gpa ?? 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Published</span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $result->created_at->format('Y-m-d') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $result->exam_date ? $result->exam_date->format('Y-m-d') : 'N/A' }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <button onclick="deleteResult({{ $result->id }})" class="text-red-600 hover:text-red-900">
                                             <i class="fas fa-trash"></i> Delete
@@ -271,6 +273,8 @@ function closePublishResultModal() {
 
 // Fetch student info when student ID is entered
 function fetchStudentInfo(studentId) {
+    console.log('Searching for student ID:', studentId);
+    
     if (studentId.trim() === '') {
         document.getElementById('student_name').value = '';
         return;
@@ -279,6 +283,7 @@ function fetchStudentInfo(studentId) {
     fetch(`/admin/students/search/${studentId}`)
         .then(response => response.json())
         .then(data => {
+            console.log('Student search response:', data);
             if (data.success) {
                 // Combine first_name and last_name for full name
                 const fullName = data.student.first_name + ' ' + data.student.last_name;

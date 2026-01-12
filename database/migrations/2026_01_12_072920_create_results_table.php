@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained()->onDelete('cascade');
-            $table->foreignId('course_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('course_id')->nullable(); // Remove foreign key constraint
             $table->string('exam_type');
             $table->decimal('marks', 5, 2);
             $table->decimal('total_marks', 5, 2);

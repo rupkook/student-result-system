@@ -168,12 +168,12 @@
                                     </div>
                                     <div class="space-y-2">
                                         <div class="flex justify-between">
-                                            <span class="text-sm text-gray-600">Subject:</span>
-                                            <span class="text-sm font-medium">{{ $result->subject ?? 'N/A' }}</span>
+                                            <span class="text-sm text-gray-600">Course:</span>
+                                            <span class="text-sm font-medium">{{ $result->course ? $result->course->course_name : 'N/A' }}</span>
                                         </div>
                                         <div class="flex justify-between">
                                             <span class="text-sm text-gray-600">Score:</span>
-                                            <span class="text-sm font-semibold text-blue-600">{{ $result->score ?? 'N/A' }}</span>
+                                            <span class="text-sm font-semibold text-blue-600">{{ $result->marks ?? 'N/A' }}/{{ $result->total_marks ?? 'N/A' }}</span>
                                         </div>
                                         <div class="flex justify-between">
                                             <span class="text-sm text-gray-600">Grade:</span>

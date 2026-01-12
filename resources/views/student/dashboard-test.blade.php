@@ -18,8 +18,9 @@
                     @foreach($student->results as $result)
                         <div class="border rounded p-3 mb-2">
                             <p><strong>{{ $result->exam_type ?? 'Exam' }}</strong></p>
-                            <p>Score: {{ $result->score ?? 'N/A' }}</p>
+                            <p>Score: {{ $result->marks ?? 'N/A' }}/{{ $result->total_marks ?? 'N/A' }}</p>
                             <p>Grade: {{ $result->grade ?? 'N/A' }}</p>
+                            <p>Course: {{ $result->course ? $result->course->course_name : 'N/A' }}</p>
                         </div>
                     @endforeach
                 @else
