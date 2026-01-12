@@ -134,9 +134,6 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $result->created_at->format('Y-m-d') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button onclick="editResult({{ $result->id }})" class="text-blue-600 hover:text-blue-900 mr-3">
-                                            <i class="fas fa-edit"></i> Edit
-                                        </button>
                                         <button onclick="deleteResult({{ $result->id }})" class="text-red-600 hover:text-red-900">
                                             <i class="fas fa-trash"></i> Delete
                                         </button>
@@ -311,12 +308,6 @@ function searchResults() {
     if (examFilter) url.searchParams.set('exam', examFilter);
     
     window.location.href = url.toString();
-}
-
-// Edit result (placeholder)
-function editResult(id) {
-    // TODO: Implement edit functionality
-    alert('Edit functionality coming soon for result ID: ' + id);
 }
 
 // Delete result (placeholder)

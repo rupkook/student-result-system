@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -97,32 +98,60 @@ class AdminController extends Controller
         if (!$student) {
             return response()->json(['success' => false, 'message' => 'Student not found'], 404);
         }
-        return response()->json($student);
+        
+        // Format dates properly for JSON response
+        $studentArray = $student->toArray();
+        if ($studentArray['date_of_birth']) {
+            $studentArray['date_of_birth'] = $student->date_of_birth->format('Y-m-d');
+        }
+        if ($studentArray['admission_date']) {
+            $studentArray['admission_date'] = $student->admission_date->format('Y-m-d');
+        }
+        
+        return response()->json($studentArray);
     }
 
     public function updateStudent(Request $request, $id)
     {
-        $student = Student::find($id);
-        if (!$student) {
-            return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+        try {
+            \Log::info('Update student request for ID: ' . $id);
+            \Log::info('Request data: ', $request->all());
+            
+            $student = Student::find($id);
+            if (!$student) {
+                \Log::error('Student not found with ID: ' . $id);
+                return response()->json(['success' => false, 'message' => 'Student not found'], 404);
+            }
+
+            $validated = $request->validate([
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:students,email,' . $id,
+                'phone' => 'nullable|string|max:20',
+                'date_of_birth' => 'required|date',
+                'gender' => 'required|in:male,female,other',
+                'course' => 'required|in:MERN Stack,Web App Dev,UI/UX,Python,Graphic Design,Motion Design,Video Editing,Digital Marketing,Cybersecurity,Data Science,Networking',
+                'admission_date' => 'required|date',
+                'address' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'division' => 'required|string|max:255',
+                'zip_code' => 'required|string|max:20',
+                'country' => 'required|string|max:255',
+                'status' => 'required|in:active,inactive,suspended',
+            ]);
+
+            \Log::info('Validated data: ', $validated);
+
+            // Don't allow updating student_id - it's auto-generated
+            $student->update($validated);
+
+            \Log::info('Student updated successfully');
+            return response()->json(['success' => true, 'message' => 'Student updated successfully!']);
+            
+        } catch (\Exception $e) {
+            \Log::error('Update student error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error updating student: ' . $e->getMessage()]);
         }
-
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:students,email,' . $id,
-            'phone' => 'nullable|string|max:20',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required|in:male,female,other',
-            'address' => 'required|string|max:255',
-            'course' => 'required|in:MERN Stack,Web App Dev,UI/UX,Python,Graphic Design,Motion Design,Video Editing,Digital Marketing,Cybersecurity,Data Science,Networking',
-            'status' => 'required|in:active,inactive,suspended',
-        ]);
-
-        // Don't allow updating student_id - it's auto-generated
-        $student->update($validated);
-
-        return response()->json(['success' => true, 'message' => 'Student updated successfully!']);
     }
 
     public function deleteStudent($id)
@@ -184,5 +213,22 @@ class AdminController extends Controller
 
         return redirect()->route('admin.results')
             ->with('success', 'Result published successfully!');
+    }
+
+    public function deleteResult($id)
+    {
+        try {
+            $result = Result::find($id);
+            if (!$result) {
+                return response()->json(['success' => false, 'message' => 'Result not found'], 404);
+            }
+
+            $result->delete();
+
+            return response()->json(['success' => true, 'message' => 'Result deleted successfully!']);
+        } catch (\Exception $e) {
+            Log::error('Delete result error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Error deleting result: ' . $e->getMessage()]);
+        }
     }
 }

@@ -84,7 +84,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
-                        <select id="department-filter" class="form-input px-3 py-2 border border-gray-300 rounded-md">
+                        <select id="course-filter" class="form-input px-3 py-2 border border-gray-300 rounded-md">
                             <option value="">All Courses</option>
                             @foreach($courses ?? [] as $course)
                             <option value="{{ $course }}">{{ $course }}</option>
@@ -112,7 +112,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
@@ -140,7 +140,7 @@
                                     <span class="text-sm text-gray-900">{{ $student->email }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-sm text-gray-900">{{ $student->department }}</span>
+                                    <span class="text-sm text-gray-900">{{ $student->course }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
@@ -312,6 +312,7 @@
             <div class="mt-2 px-7 py-3">
                 <form id="editStudentForm" class="space-y-4">
                     @csrf
+                    <input type="hidden" name="_method" value="PUT">
                     <input type="hidden" name="student_id" id="edit_student_id">
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Student ID</label>
@@ -360,6 +361,38 @@
                         <textarea name="address" id="edit_address" rows="3" class="form-input mt-1 block w-full"></textarea>
                     </div>
                     <div>
+                        <label class="block text-sm font-medium text-gray-700">City</label>
+                        <input type="text" name="city" id="edit_city" required class="form-input mt-1 block w-full">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Division</label>
+                        <select name="state" id="edit_state" required class="form-input mt-1 block w-full">
+                            <option value="">Select Division</option>
+                            <option value="Barishal">Barishal</option>
+                            <option value="Chattogram">Chattogram</option>
+                            <option value="Dhaka">Dhaka</option>
+                            <option value="Khulna">Khulna</option>
+                            <option value="Mymensingh">Mymensingh</option>
+                            <option value="Rajshahi">Rajshahi</option>
+                            <option value="Rangpur">Rangpur</option>
+                            <option value="Sylhet">Sylhet</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Zip Code</label>
+                        <input type="text" name="zip_code" id="edit_zip_code" required class="form-input mt-1 block w-full">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Country</label>
+                        <select name="country" id="edit_country" required class="form-input mt-1 block w-full">
+                            <option value="Bangladesh">Bangladesh</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Admission Date</label>
+                        <input type="date" name="admission_date" id="edit_admission_date" required class="form-input mt-1 block w-full">
+                    </div>
+                    <div>
                         <label class="block text-sm font-medium text-gray-700">Status</label>
                         <select name="status" id="edit_status" required class="form-input mt-1 block w-full">
                             <option value="active">Active</option>
@@ -393,16 +426,42 @@ function closeAddStudentModal() {
 }
 
 function openEditStudentModal(student) {
+    console.log('Student object received:', student);
+    console.log('All student properties:', Object.keys(student));
+    
     document.getElementById('edit_student_id').value = student.id;
     document.getElementById('edit_student_id_field').value = student.student_id;
     document.getElementById('edit_first_name').value = student.first_name;
     document.getElementById('edit_last_name').value = student.last_name;
     document.getElementById('edit_email').value = student.email;
     document.getElementById('edit_phone').value = student.phone || '';
-    document.getElementById('edit_date_of_birth').value = student.date_of_birth;
+    
+    // Format date properly for input field
+    console.log('Original date_of_birth:', student.date_of_birth);
+    if (student.date_of_birth) {
+        const dob = new Date(student.date_of_birth);
+        const formattedDob = dob.toISOString().split('T')[0];
+        console.log('Formatted DOB:', formattedDob);
+        document.getElementById('edit_date_of_birth').value = formattedDob;
+    } else {
+        console.log('date_of_birth is null or undefined');
+    }
+    
     document.getElementById('edit_gender').value = student.gender;
-    document.getElementById('edit_department').value = student.department;
+    document.getElementById('edit_course').value = student.course;
     document.getElementById('edit_address').value = student.address;
+    document.getElementById('edit_city').value = student.city;
+    document.getElementById('edit_state').value = student.division;
+    document.getElementById('edit_zip_code').value = student.zip_code;
+    document.getElementById('edit_country').value = student.country;
+    
+    // Format admission date properly
+    if (student.admission_date) {
+        const admitDate = new Date(student.admission_date);
+        const formattedAdmitDate = admitDate.toISOString().split('T')[0];
+        document.getElementById('edit_admission_date').value = formattedAdmitDate;
+    }
+    
     document.getElementById('edit_status').value = student.status;
     document.getElementById('editStudentModal').classList.remove('hidden');
 }
@@ -421,7 +480,7 @@ function saveStudent() {
     const email = form.querySelector('[name="email"]').value.trim();
     const dateOfBirth = form.querySelector('[name="date_of_birth"]').value;
     const gender = form.querySelector('[name="gender"]').value;
-    const department = form.querySelector('[name="department"]').value;
+    const course = form.querySelector('[name="course"]').value;
     const admissionDate = form.querySelector('[name="admission_date"]').value;
     const address = form.querySelector('[name="address"]').value.trim();
     const city = form.querySelector('[name="city"]').value.trim();
@@ -430,7 +489,7 @@ function saveStudent() {
     const country = form.querySelector('[name="country"]').value;
     const password = form.querySelector('[name="password"]').value.trim();
     
-    if (!firstName || !lastName || !email || !dateOfBirth || !gender || !department || !admissionDate || !address || !city || !state || !zipCode || !country || !password) {
+    if (!firstName || !lastName || !email || !dateOfBirth || !gender || !course || !admissionDate || !address || !city || !state || !zipCode || !country || !password) {
         alert('Please fill in all required fields.');
         return;
     }
@@ -479,21 +538,30 @@ function editStudent(studentId) {
 function updateStudent() {
     const form = document.getElementById('editStudentForm');
     const formData = new FormData(form);
+    const studentId = formData.get('student_id');
     
-    fetch('{{ route("admin.students.update", ":id") }}'.replace(':id', formData.get('student_id')), {
+    console.log('Updating student ID:', studentId);
+    console.log('Form data:', Object.fromEntries(formData));
+    
+    fetch('{{ route("admin.students.update", ":id") }}'.replace(':id', studentId), {
         method: 'POST',
         body: formData,
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        return response.json();
+    })
     .then(data => {
+        console.log('Response data:', data);
         if (data.success) {
             closeEditStudentModal();
             location.reload();
         } else {
-            alert('Error: ' + data.message);
+            alert('Error: ' + (data.message || 'Unknown error occurred'));
         }
     })
     .catch(error => {
@@ -536,9 +604,9 @@ document.getElementById('search-students').addEventListener('input', function(e)
     });
 });
 
-document.getElementById('department-filter').addEventListener('change', function() {
-    // Implement department filter logic
-    console.log('Department filter:', this.value);
+document.getElementById('course-filter').addEventListener('change', function() {
+    // Implement course filter logic
+    console.log('Course filter:', this.value);
 });
 
 document.getElementById('status-filter').addEventListener('change', function() {
