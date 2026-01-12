@@ -10,9 +10,7 @@
                 <div class="rounded-md bg-red-50 p-4">
                     <div class="flex">
                         <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 20 20">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 0l7-7 7 7m0 0l7-7m-7 7h-3m-6 0l-4 4m0 0l-4 4V4"></path>
-                            </svg>
+                            <i class="fas fa-exclamation-circle h-5 w-5 text-red-400"></i>
                         </div>
                         <div class="ml-3">
                             <h3 class="text-sm font-medium text-red-800">Login Failed</h3>
@@ -62,10 +60,7 @@
                     <button type="submit" 
                             class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 transition duration-150 ease-in-out">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                            <svg class="h-5 w-5 text-red-400 group-hover:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 20 20">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13a4 4 0 11.5 0 9.5 0 0 0 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 0l7-7 7 7m0 0l7-7m-7 7h-3m-6 0l-4 4m0 0l-4 4V4"></path>
-                            </svg>
+                            <i class="fas fa-lock h-5 w-5 text-red-400 group-hover:text-red-300"></i>
                         </span>
                         Sign in
                     </button>

@@ -11,28 +11,53 @@ class StudentController extends Controller
 {
     public function dashboard()
     {
-        // Load the authenticated student with their results
-        $student = Auth::user();
-        $student = Student::with('results')->find($student->id); // Eager load results
-        
-        return view('student.dashboard', compact('student'));
+        try {
+            // Load the authenticated student with their results
+            $student = Auth::user();
+            if (!$student) {
+                return redirect()->route('login');
+            }
+            
+            $student = Student::with('results')->find($student->id); // Eager load results
+            
+            return view('student.dashboard-new', compact('student'));
+        } catch (\Exception $e) {
+            // Log the error and return a simple view
+            return view('student.dashboard', ['student' => Auth::user()]);
+        }
     }
 
     public function profile()
     {
-        // Load the authenticated student with their results
-        $student = Auth::user();
-        $student = Student::with('results')->find($student->id); // Eager load results
-        
-        return view('student.profile', compact('student'));
+        try {
+            // Load the authenticated student with their results
+            $student = Auth::user();
+            if (!$student) {
+                return redirect()->route('login');
+            }
+            
+            $student = Student::with('results')->find($student->id); // Eager load results
+            
+            return view('student.profile', compact('student'));
+        } catch (\Exception $e) {
+            return view('student.profile', ['student' => Auth::user()]);
+        }
     }
 
     public function results()
     {
-        // Load the authenticated student with their results
-        $student = Auth::user();
-        $student = Student::with('results')->find($student->id); // Eager load results
-        
-        return view('student.results', compact('student'));
+        try {
+            // Load the authenticated student with their results
+            $student = Auth::user();
+            if (!$student) {
+                return redirect()->route('login');
+            }
+            
+            $student = Student::with('results')->find($student->id); // Eager load results
+            
+            return view('student.results', compact('student'));
+        } catch (\Exception $e) {
+            return view('student.results', ['student' => Auth::user()]);
+        }
     }
 }

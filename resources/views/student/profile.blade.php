@@ -13,9 +13,7 @@
         <div class="p-6">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11.5 0 9.5 0 0 0 0z"></path>
-                    </svg>
+                    <i class="fas fa-user text-white text-xl"></i>
                 </div>
                 <h2 class="text-xl font-bold text-gray-800">Student Panel</h2>
             </div>
@@ -23,27 +21,19 @@
         
         <nav class="mt-6">
             <a href="{{ route('student.dashboard') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700 hover:text-blue-600">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2 2 4-4m0 0l-4-4m4 4V4"></path>
-                </svg>
+                <i class="fas fa-home w-5 h-5 mr-3"></i>
                 Dashboard
             </a>
             <a href="{{ route('student.profile') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700 hover:text-blue-600">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11.5 0 9.5 0 0 0 0z"></path>
-                </svg>
+                <i class="fas fa-user w-5 h-5 mr-3"></i>
                 Profile
             </a>
             <a href="{{ route('student.results') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700 hover:text-blue-600">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v1a1 1 0 001 1h4a1 1 0 001-1v-1m3-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v6m3-2h6"></path>
-                </svg>
+                <i class="fas fa-chart-line w-5 h-5 mr-3"></i>
                 Results
             </a>
             <a href="{{ route('logout') }}" class="sidebar-item flex items-center px-6 py-3 text-red-600 hover:text-red-700 mt-8">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4V4"></path>
-                </svg>
+                <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
                 Logout
             </a>
         </nav>
@@ -112,9 +102,7 @@
                                     </div>
                                 @else
                                     <div class="text-center py-8">
-                                        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v1a1 1 0 001 1h4a1 1 0 001-1v-1m3-2V8a2 2 0 00-2-2H8a2 2 0 00-2 2v6m3-2h6"></path>
-                                        </svg>
+                                        <i class="fas fa-chart-bar w-16 h-16 mx-auto text-gray-400 mb-4"></i>
                                         <h4 class="text-xl font-semibold text-gray-600 mb-2">No Results Available</h4>
                                         <p class="text-gray-500 mb-1">Your results section is currently empty.</p>
                                         <p class="text-sm text-gray-400">Results will appear here when your admin adds them.</p>
