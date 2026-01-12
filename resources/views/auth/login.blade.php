@@ -68,7 +68,7 @@
             </form>
 
             <div class="mt-6 text-center text-sm text-gray-600">
-                <p>Admin Login: admin@studentresult.com / admin123</p>
+                <!-- <p>Admin Login: admin@studentresult.com / admin123</p> -->
                 <p class="mt-2">Student Login: Use your email and password</p>
             </div>
         </div>
