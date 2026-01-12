@@ -139,7 +139,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 mb-1">Admission Date</p>
-                            <p class="font-semibold text-gray-800">{{ auth()->user()->admission_date ? auth()->user()->admission_date->format('M d, Y') : 'Not provided' }}</p>
+                            <p class="font-semibold text-gray-800">{{ auth()->user()->admission_date ? (is_string(auth()->user()->admission_date) ? auth()->user()->admission_date : auth()->user()->admission_date->format('M d, Y')) : 'Not provided' }}</p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 mb-1">Status</p>
