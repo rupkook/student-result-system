@@ -223,10 +223,6 @@
                             <span class="text-gray-600">Account Status:</span>
                             <span class="text-[#4B8EF2] font-medium">Active</span>
                         </div>
-                        <div class="flex justify-between">
-                            <span class="text-gray-600">System Version:</span>
-                            <span class="text-gray-900">v1.0.0</span>
-                        </div>
                     </div>
                 </div>
             </div>
