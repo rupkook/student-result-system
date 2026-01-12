@@ -34,6 +34,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // Admin student management routes
     Route::get('/students/add', [AdminController::class, 'showAddStudentForm'])->name('admin.students.add');
     Route::get('/students', [AdminController::class, 'students'])->name('admin.students');
+    Route::get('/students/search/{student_id}', [AdminController::class, 'searchStudent'])->name('admin.students.search');
     Route::post('/students/store', [AdminController::class, 'storeStudent'])->name('admin.students.store');
     Route::get('/students/{id}/edit', [AdminController::class, 'editStudent'])->name('admin.students.edit');
     Route::post('/students/{id}/update', [AdminController::class, 'updateStudent'])->name('admin.students.update');

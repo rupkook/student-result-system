@@ -154,22 +154,22 @@ class AdminController extends Controller
         $validated = $request->validate([
             'student_id' => 'required|exists:students,id',
             'student_name' => 'required|string|max:255',
-            'course' => 'required|string|max:255',
+            'subject' => 'required|string|max:255',
             'grade' => 'required|string|max:10',
             'score' => 'required|numeric|min:0|max:100',
             'exam_type' => 'required|string|max:100',
         ]);
 
-        // Find student
+        // Find the student
         $student = Student::find($validated['student_id']);
         if (!$student) {
             return back()->withErrors(['student_id' => 'Student not found']);
         }
 
-        // Create result
+        // Create the result
         Result::create([
             'student_id' => $validated['student_id'],
-            'subject' => $validated['course'], // Store course as subject in database
+            'subject' => $validated['subject'],
             'exam_type' => $validated['exam_type'],
             'score' => $validated['score'],
             'grade' => $validated['grade'],
