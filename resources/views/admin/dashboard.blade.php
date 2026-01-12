@@ -184,7 +184,7 @@
                     </div>
                     <div class="p-6">
                         <div class="grid grid-cols-2 gap-4">
-                            <a href="{{ route('admin.students.create') }}" class="btn-transition p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-red-500 hover:bg-red-50 text-center">
+                            <a href="{{ route('admin.students.add') }}" class="btn-transition p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-red-500 hover:bg-red-50 text-center">
                                 <svg class="w-8 h-8 mx-auto mb-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
                                 </svg>
@@ -212,99 +212,13 @@
                     </div>
                 </div>
 
-                <!-- Course Distribution Chart -->
-                <div class="bg-white rounded-lg shadow">
-                    <div class="px-6 py-4 border-b border-gray-200">
-                        <h3 class="text-lg font-medium text-gray-900">Course Distribution</h3>
-                    </div>
-                    <div class="p-6">
-                        <canvas id="courseChart" width="400" height="200"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Grade Distribution Chart -->
-            <div class="bg-white rounded-lg shadow">
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Grade Distribution</h3>
-                </div>
-                <div class="p-6">
-                    <canvas id="gradeChart" width="400" height="100"></canvas>
-                </div>
-            </div>
-        </main>
+                </main>
     </div>
 </div>
 @endsection
 
 @section('scripts')
 <script>
-// Course Distribution Chart
-const courseCtx = document.getElementById('courseChart').getContext('2d');
-const courseChart = new Chart(courseCtx, {
-    type: 'doughnut',
-    data: {
-        labels: @json($courseStats->pluck('course_name')),
-        datasets: [{
-            data: @json($courseStats->pluck('results_count')),
-            backgroundColor: [
-                '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
-                '#EC4899', '#14B8A6', '#F97316', '#6366F1', '#84CC16'
-            ],
-            borderWidth: 2,
-            borderColor: '#fff'
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    padding: 15,
-                    font: {
-                        size: 12
-                    }
-                }
-            }
-        }
-    }
-});
-
-// Grade Distribution Chart
-const gradeCtx = document.getElementById('gradeChart').getContext('2d');
-const gradeChart = new Chart(gradeCtx, {
-    type: 'bar',
-    data: {
-        labels: @json($gradeStats->pluck('grade')),
-        datasets: [{
-            label: 'Number of Students',
-            data: @json($gradeStats->pluck('count')),
-            backgroundColor: '#3B82F6',
-            borderColor: '#2563EB',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    stepSize: 1
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                display: false
-            }
-        }
-    }
-});
-
 // Quick Actions Functions
 function generateReport() {
     alert('Report generation feature coming soon!');
