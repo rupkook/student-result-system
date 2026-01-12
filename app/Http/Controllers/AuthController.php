@@ -18,6 +18,8 @@ class AuthController extends Controller
 
         // Check if admin credentials
         if ($request->email === 'admin@studentresult.com' && $request->password === 'admin123') {
+            // Create admin session
+            session(['is_admin' => true, 'admin_email' => $request->email]);
             return redirect()->route('admin.dashboard');
         }
 
@@ -34,7 +36,13 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        // Clear admin session if exists
+        if (session('is_admin')) {
+            session()->forget(['is_admin', 'admin_email']);
+        } else {
+            Auth::logout();
+        }
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         

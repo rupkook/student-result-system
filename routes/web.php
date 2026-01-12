@@ -26,8 +26,8 @@ Route::middleware('auth')->prefix('student')->name('student.')->group(function (
     Route::get('/results', [StudentController::class, 'results'])->name('results');
 });
 
-// Admin Panel Routes
-Route::prefix('admin')->name('admin.')->group(function () {
+// Admin Panel Routes (protected)
+Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/results', [AdminController::class, 'results'])->name('results');
     Route::get('/results/publish', function() {
