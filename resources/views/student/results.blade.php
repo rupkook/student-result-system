@@ -58,7 +58,7 @@
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-lg shadow overflow-hidden">
                     <div class="p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1">
                             <!-- Results Section -->
                             <div class="bg-green-50 p-6 rounded-lg border border-green-200">
                                 <h3 class="font-semibold text-green-800 mb-4 text-lg">Your Results</h3>

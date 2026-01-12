@@ -96,18 +96,6 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                             </svg>
                         </div>
-                        <select id="course-filter" class="form-input px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">All Courses</option>
-                            @foreach($courses ?? [] as $course)
-                            <option value="{{ $course }}">{{ $course }}</option>
-                            @endforeach
-                        </select>
-                        <select id="status-filter" class="form-input px-3 py-2 border border-gray-300 rounded-md">
-                            <option value="">All Status</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                            <option value="suspended">Suspended</option>
-                        </select>
                     </div>
                     <div class="text-sm text-gray-600">
                         Total: <span id="total-count">{{ $students->total() }}</span> students

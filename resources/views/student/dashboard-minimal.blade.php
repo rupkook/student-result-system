@@ -11,7 +11,7 @@
     background-color: #f0f9ff;
 }
 .sidebar-item.active {
-    background-color: #3b82f6;
+    background-color: #4B8EF2;
     color: white;
 }
 .card {
@@ -19,7 +19,7 @@
 }
 .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 4px 12px rgba(75, 142, 242, 0.15);
 }
 </style>
 @endsection
@@ -28,10 +28,10 @@
 <div class="flex h-screen bg-gray-50">
     <!-- Sidebar -->
     <div class="w-64 bg-white border-r border-gray-200">
-        <div class="p-6 bg-blue-600">
+        <div class="p-6 bg-[#4B8EF2]">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                    <i class="fas fa-user text-blue-600"></i>
+                    <i class="fas fa-user text-[#4B8EF2]"></i>
                 </div>
                 <div>
                     <h2 class="text-lg font-bold text-white">Student Panel</h2>
@@ -42,7 +42,7 @@
         
         <nav class="mt-6">
             <a href="{{ route('student.dashboard') }}" class="sidebar-item active flex items-center px-6 py-3 text-white">
-                <i class="fas fa-home w-5 h-5 mr-3"></i>
+                <i class="fas fa-user w-5 h-5 mr-3"></i>
                 <span>Dashboard</span>
             </a>
             <a href="{{ route('student.profile') }}" class="sidebar-item flex items-center px-6 py-3 text-gray-700">
@@ -77,7 +77,7 @@
                         <p class="text-sm font-medium text-gray-900">{{ $student->full_name ?? 'Student' }}</p>
                         <p class="text-xs text-gray-500">{{ $student->email }}</p>
                     </div>
-                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                    <div class="w-10 h-10 bg-[#4B8EF2] rounded-full flex items-center justify-center">
                         <span class="text-white text-sm font-bold">{{ substr($student->first_name ?? 'S', 0, 1) }}</span>
                     </div>
                 </div>
@@ -87,11 +87,11 @@
         <!-- Dashboard Content -->
         <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="card bg-white rounded-lg shadow p-6 border-l-4 border-blue-600">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="card bg-white rounded-lg shadow p-6 border-l-4 border-[#4B8EF2]">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 rounded-full">
-                            <i class="fas fa-user text-blue-600"></i>
+                            <i class="fas fa-user text-[#4B8EF2]"></i>
                         </div>
                         <div class="ml-4">
                             <p class="text-sm text-gray-500">Student ID</p>
@@ -100,22 +100,10 @@
                     </div>
                 </div>
                 
-                <div class="card bg-white rounded-lg shadow p-6 border-l-4 border-blue-600">
+                <div class="card bg-white rounded-lg shadow p-6 border-l-4 border-[#4B8EF2]">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 rounded-full">
-                            <i class="fas fa-graduation-cap text-blue-600"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm text-gray-500">Department</p>
-                            <p class="text-xl font-bold text-gray-900">{{ $student->department ?? 'N/A' }}</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card bg-white rounded-lg shadow p-6 border-l-4 border-blue-600">
-                    <div class="flex items-center">
-                        <div class="p-3 bg-blue-100 rounded-full">
-                            <i class="fas fa-chart-bar text-blue-600"></i>
+                            <i class="fas fa-chart-bar text-[#4B8EF2]"></i>
                         </div>
                         <div class="ml-4">
                             <p class="text-sm text-gray-500">Results</p>
@@ -129,7 +117,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Profile Information -->
                 <div class="card bg-white rounded-lg shadow overflow-hidden">
-                    <div class="bg-blue-600 p-4">
+                    <div class="bg-[#4B8EF2] p-4">
                         <h3 class="text-lg font-bold text-white flex items-center">
                             <i class="fas fa-user mr-2"></i>
                             Profile Information
@@ -155,7 +143,7 @@
                             </div>
                             <div class="flex justify-between items-center py-2">
                                 <span class="text-gray-600">Status</span>
-                                <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                                <span class="px-3 py-1 text-xs rounded-full bg-[#4B8EF2] text-white">
                                     {{ ucfirst($student->status) }}
                                 </span>
                             </div>
@@ -165,7 +153,7 @@
 
                 <!-- Recent Results -->
                 <div class="card bg-white rounded-lg shadow overflow-hidden">
-                    <div class="bg-blue-600 p-4">
+                    <div class="bg-[#4B8EF2] p-4">
                         <h3 class="text-lg font-bold text-white flex items-center">
                             <i class="fas fa-chart-line mr-2"></i>
                             Recent Results
@@ -175,14 +163,14 @@
                         @if(isset($student->results) && $student->results->count() > 0)
                             <div class="space-y-3 max-h-64 overflow-y-auto">
                                 @foreach($student->results->take(5) as $result)
-                                    <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-600">
+                                    <div class="bg-gray-50 rounded-lg p-4 border-l-4 border-[#4B8EF2]">
                                         <div class="flex justify-between items-start">
                                             <div>
                                                 <p class="font-semibold text-gray-900">{{ $result->exam_type ?? 'Exam' }}</p>
                                                 <p class="text-sm text-gray-600">Course: {{ $result->course ? $result->course->course_name : 'N/A' }}</p>
                                                 <div class="flex items-center space-x-4 mt-2">
-                                                    <span class="text-sm font-medium text-blue-600">Score: {{ $result->marks ?? 'N/A' }}/{{ $result->total_marks ?? 'N/A' }}</span>
-                                                    <span class="text-sm font-medium text-blue-600">Grade: {{ $result->grade ?? 'N/A' }}</span>
+                                                    <span class="text-sm font-medium text-[#4B8EF2]">Score: {{ $result->marks ?? 'N/A' }}/{{ $result->total_marks ?? 'N/A' }}</span>
+                                                    <span class="text-sm font-medium text-[#4B8EF2]">Grade: {{ $result->grade ?? 'N/A' }}</span>
                                                 </div>
                                             </div>
                                             <div class="text-right">
@@ -194,7 +182,7 @@
                             </div>
                             @if($student->results->count() > 5)
                                 <div class="mt-4 text-center">
-                                    <a href="{{ route('student.results') }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                                    <a href="{{ route('student.results') }}" class="text-[#4B8EF2] hover:text-[#3d7be8] font-medium">
                                         View All Results <i class="fas fa-arrow-right ml-1"></i>
                                     </a>
                                 </div>
@@ -215,10 +203,10 @@
                 <div class="card bg-white rounded-lg shadow p-6">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
                     <div class="space-y-3">
-                        <a href="{{ route('student.profile') }}" class="block w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200 text-center font-medium">
+                        <a href="{{ route('student.profile') }}" class="block w-full bg-[#4B8EF2] text-white py-3 px-4 rounded-lg hover:bg-[#3d7be8] transition duration-200 text-center font-medium">
                             <i class="fas fa-user mr-2"></i> View Full Profile
                         </a>
-                        <a href="{{ route('student.results') }}" class="block w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition duration-200 text-center font-medium">
+                        <a href="{{ route('student.results') }}" class="block w-full bg-[#4B8EF2] text-white py-3 px-4 rounded-lg hover:bg-[#3d7be8] transition duration-200 text-center font-medium">
                             <i class="fas fa-chart-line mr-2"></i> View All Results
                         </a>
                     </div>
@@ -233,7 +221,7 @@
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">Account Status:</span>
-                            <span class="text-blue-600 font-medium">Active</span>
+                            <span class="text-[#4B8EF2] font-medium">Active</span>
                         </div>
                         <div class="flex justify-between">
                             <span class="text-gray-600">System Version:</span>
